@@ -15,6 +15,9 @@
 		8EB44C6123B094B6009338A0 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8EB44C5F23B094B6009338A0 /* LaunchScreen.storyboard */; };
 		8EB44C6C23B094B6009338A0 /* WorldWeatherSearchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EB44C6B23B094B6009338A0 /* WorldWeatherSearchTests.swift */; };
 		8EB44C7723B094B6009338A0 /* WorldWeatherSearchUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EB44C7623B094B6009338A0 /* WorldWeatherSearchUITests.swift */; };
+		8EB44C8523B0A2AB009338A0 /* SearchResultsTableController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EB44C8423B0A2AB009338A0 /* SearchResultsTableController.swift */; };
+		8EB44C8623B0A2AB009338A0 /* SearchResultsTableController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EB44C8423B0A2AB009338A0 /* SearchResultsTableController.swift */; };
+		8EB44C8723B0A2AB009338A0 /* SearchResultsTableController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EB44C8423B0A2AB009338A0 /* SearchResultsTableController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,6 +52,7 @@
 		8EB44C7223B094B6009338A0 /* WorldWeatherSearchUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WorldWeatherSearchUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		8EB44C7623B094B6009338A0 /* WorldWeatherSearchUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorldWeatherSearchUITests.swift; sourceTree = "<group>"; };
 		8EB44C7823B094B6009338A0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		8EB44C8423B0A2AB009338A0 /* SearchResultsTableController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultsTableController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -102,6 +106,7 @@
 				8EB44C5423B094B4009338A0 /* AppDelegate.swift */,
 				8EB44C5623B094B4009338A0 /* SceneDelegate.swift */,
 				8EB44C5823B094B4009338A0 /* ViewController.swift */,
+				8EB44C8423B0A2AB009338A0 /* SearchResultsTableController.swift */,
 				8EB44C5A23B094B4009338A0 /* Main.storyboard */,
 				8EB44C5D23B094B6009338A0 /* Assets.xcassets */,
 				8EB44C5F23B094B6009338A0 /* LaunchScreen.storyboard */,
@@ -260,6 +265,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8EB44C5923B094B4009338A0 /* ViewController.swift in Sources */,
+				8EB44C8523B0A2AB009338A0 /* SearchResultsTableController.swift in Sources */,
 				8EB44C5523B094B4009338A0 /* AppDelegate.swift in Sources */,
 				8EB44C5723B094B4009338A0 /* SceneDelegate.swift in Sources */,
 			);
@@ -270,6 +276,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8EB44C6C23B094B6009338A0 /* WorldWeatherSearchTests.swift in Sources */,
+				8EB44C8623B0A2AB009338A0 /* SearchResultsTableController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -278,6 +285,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8EB44C7723B094B6009338A0 /* WorldWeatherSearchUITests.swift in Sources */,
+				8EB44C8723B0A2AB009338A0 /* SearchResultsTableController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
