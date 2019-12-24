@@ -12,6 +12,8 @@ class SearchResultsTableController: UITableViewController {
     
     var searchModel: SearchModel?
     
+    var delegate: SelectedModelDelegate?
+    
     var matchingItems: [SearchModelObject]? {
         didSet {
            DispatchQueue.main.async {
@@ -118,4 +120,22 @@ extension SearchResultsTableController {
                 
     }
     
+}
+
+extension SearchResultsTableController {
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        tableView.deselectRow(at: indexPath, animated: true)
+        
+        if let matchingResults = matchingItems {
+        
+            let selectedResultModel = matchingResults[indexPath.row]
+            
+            delegate?.handleSelectedModel(selectedModel: selectedResultModel)
+            
+            dismiss(animated: true, completion: nil)
+        }
+    }
+
 }

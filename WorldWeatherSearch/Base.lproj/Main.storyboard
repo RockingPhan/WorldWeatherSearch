@@ -98,5 +98,32 @@
             </objects>
             <point key="canvasLocation" x="1206" y="784"/>
         </scene>
+        <!--Weather Display View Controller-->
+        <scene sceneID="2Ma-rb-yTA">
+            <objects>
+                <viewController storyboardIdentifier="WeatherDisplayController" id="p6a-Yt-eIV" customClass="WeatherDisplayViewController" customModule="WorldWeatherSearch" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Fqh-Ti-bSf">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Current Weather View" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="58e-NV-bsz">
+                                <rect key="frame" x="123" y="442.5" width="168.5" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstItem="58e-NV-bsz" firstAttribute="centerY" secondItem="igz-Gr-kYq" secondAttribute="centerY" id="RvK-7u-4bv"/>
+                            <constraint firstItem="58e-NV-bsz" firstAttribute="centerX" secondItem="igz-Gr-kYq" secondAttribute="centerX" id="m8L-hr-TN5"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="igz-Gr-kYq"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="8U6-Kf-rzP" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="132" y="784"/>
+        </scene>
     </scenes>
 </document>

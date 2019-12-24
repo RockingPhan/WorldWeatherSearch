@@ -8,9 +8,15 @@
 
 import UIKit
 
+protocol SelectedModelDelegate {
+    func handleSelectedModel(selectedModel: SearchModelObject)
+}
+
 class ViewController: UIViewController {
     
     var searchController:UISearchController!
+    
+    var selectedSearchModel: SearchModelObject?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -18,6 +24,7 @@ class ViewController: UIViewController {
         print("In view controller")
         
         let searchResultsTableController = storyboard!.instantiateViewController(withIdentifier: "SearchResultsTableController") as! SearchResultsTableController
+        searchResultsTableController.delegate = self
         searchController = UISearchController(searchResultsController: searchResultsTableController)
         searchController.searchResultsUpdater = searchResultsTableController as UISearchResultsUpdating
         
@@ -34,5 +41,17 @@ class ViewController: UIViewController {
     }
 
 
+}
+
+extension ViewController: SelectedModelDelegate {
+    
+    func handleSelectedModel(selectedModel: SearchModelObject) {
+        selectedSearchModel = selectedModel
+        
+        let weatherDisplayController = storyboard!.instantiateViewController(withIdentifier: "WeatherDisplayController") as! WeatherDisplayViewController
+        weatherDisplayController.selectedModel = selectedSearchModel
+        self.navigationController?.pushViewController(weatherDisplayController, animated: true)
+        
+    }
 }
 

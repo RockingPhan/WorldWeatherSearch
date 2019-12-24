@@ -33,10 +33,17 @@ class WeatherServiceAPIHandler {
                     print("Unable to parse the response in given type \(T.self)")
                     return errorHandler(WeatherServiceAPIHandler.genericError)
                 }
-                if let responseObject = try? JSONDecoder().decode(T.self, from: data) {
+                
+                do {
+                    let responseObject = try JSONDecoder().decode(T.self, from: data)
                     successHandler(responseObject)
                     return
                 }
+                catch {
+                    print("parse error")
+                    return errorHandler(error.localizedDescription)
+                 }
+                
             }
             errorHandler(WeatherServiceAPIHandler.genericError)
         }
