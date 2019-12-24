@@ -10,11 +10,29 @@ import UIKit
 
 class WeatherDisplayViewController: UIViewController {
     
+    @IBOutlet weak var cityNameLabel: UILabel!
+    
+    @IBOutlet weak var weatherDescLabel: UILabel!
+    
+    @IBOutlet weak var weatherIconImgView: UIImageView!
+    
+    @IBOutlet weak var temperatureLabel: UILabel!
+    
+    @IBOutlet weak var windValue: UILabel!
+    
+    @IBOutlet weak var feelsLikeValue: UILabel!
+    
+    @IBOutlet weak var humidityValue: UILabel!
+    
     var selectedModel: SearchModelObject?
     
     var currentWeatherData: CurrentCondition?
     
+    var cityRequestData: Request?
+    
     var weatherServiceHandler: WeatherServiceAPIHandler!
+    
+    var cityTitle: String?
     
     let localWeatherURLString = "https://api.worldweatheronline.com/premium/v1/weather.ashx"
     
@@ -34,15 +52,17 @@ class WeatherDisplayViewController: UIViewController {
         
         if let selectedLocationModel = selectedModel {
             
-            var titleStr: String?
+            var titleStr = ""
             if let areaName = selectedLocationModel.areaName, areaName.count>0 {
                 
-                titleStr = areaName[0].value
+                titleStr = areaName[0].value ?? ""
             }
             if let country = selectedLocationModel.country, country.count>0 {
-                                
-                titleStr?.append(country[0].value ?? "")
+                titleStr.append(", ")
+                titleStr.append(country[0].value ?? "")
             }
+            
+            cityTitle = titleStr
             
             if let latitude = selectedLocationModel.latitude, let longitude = selectedLocationModel.longitude {
                 
@@ -67,15 +87,15 @@ class WeatherDisplayViewController: UIViewController {
     
     func getCurrentWeatherFromAPI(for location: String ) {
            
-           let successHandler: (LocalWeatherModel) -> Void = { (localWeatherModel) in
+        let successHandler: (LocalWeatherModel) -> Void = { (localWeatherModel) in
             if let currentweatherDataArr = localWeatherModel.data?.current_condition, currentweatherDataArr.count > 0 {
                 
                 self.currentWeatherData = currentweatherDataArr[0]
-                print(localWeatherModel)
+                self.setUpUIForCurrenWeather()
                 self.removeSpinner()
-                                
+                
             }
-           }
+        }
            
            let errorHandler: (String) -> Void = { (error) in
                print(error)
@@ -98,6 +118,38 @@ class WeatherDisplayViewController: UIViewController {
                             successHandler: successHandler,
                             errorHandler: errorHandler)
        }
+    
+    
+    func setUpUIForCurrenWeather() {
+        
+        guard let currentWeather = currentWeatherData else {
+            return
+        }
+        
+        DispatchQueue.main.async {
+            
+            self.cityNameLabel.text = self.cityTitle
+            
+            if let weatherDescArr = currentWeather.weatherDesc, weatherDescArr.count > 0 {
+                
+                self.weatherDescLabel.text = weatherDescArr[0].value
+
+            }
+            
+            self.temperatureLabel.text = NSString(format:"\(currentWeather.temp_C!)%@" as NSString, "\u{00B0}") as String
+            
+            self.windValue.text = "\(currentWeather.windspeedMiles!) mph"
+            
+            self.feelsLikeValue.text = NSString(format:"\(currentWeather.FeelsLikeC!)%@" as NSString, "\u{00B0}") as String
+
+            self.humidityValue.text = "\(currentWeather.humidity!)%"
+
+        }
+        
+        
+        
+    }
+    
     
     
     
