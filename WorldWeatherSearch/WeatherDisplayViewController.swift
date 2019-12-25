@@ -34,6 +34,9 @@ class WeatherDisplayViewController: UIViewController {
     
     var cityTitle: String?
     
+    let imageCache = NSCache<NSString, UIImage>()
+
+    
     let localWeatherURLString = "https://api.worldweatheronline.com/premium/v1/weather.ashx"
     
     var activityIndicatorView : UIView?
@@ -143,6 +146,29 @@ class WeatherDisplayViewController: UIViewController {
             self.feelsLikeValue.text = NSString(format:"\(currentWeather.FeelsLikeC!)%@" as NSString, "\u{00B0}") as String
 
             self.humidityValue.text = "\(currentWeather.humidity!)%"
+            
+            if let weatherIconUrlArr = currentWeather.weatherIconUrl, weatherIconUrlArr.count > 0 {
+                
+                guard let iconImgUrlString = weatherIconUrlArr[0].value, let imageUrl = URL(string: iconImgUrlString)  else {
+                    return
+                }
+                
+                
+                
+                self.downloadImage(url: imageUrl, completion: { (iconImage, error) in
+                    
+                    if let error = error {
+                        print("Couldn't download image: ", error)
+                        return
+                    }
+                    guard let weatherIconImage = iconImage else { return }
+                    DispatchQueue.main.async {
+                        self.weatherIconImgView.image = weatherIconImage
+                    }
+                    
+                })
+                
+            }
 
         }
         
@@ -176,6 +202,28 @@ extension WeatherDisplayViewController {
         DispatchQueue.main.async {
             self.activityIndicatorView?.removeFromSuperview()
             self.activityIndicatorView = nil
+        }
+    }
+    
+}
+
+extension WeatherDisplayViewController {
+    
+    func downloadImage(url: URL, completion: @escaping (_ image: UIImage?, _ error: Error? ) -> Void) {
+        if let cachedImage = imageCache.object(forKey: url.absoluteString as NSString) {
+            completion(cachedImage, nil)
+        } else {
+             URLSession.shared.dataTask(with: url) { data, response, error in
+                if let error = error {
+                    completion(nil, error)
+                    
+                } else if let data = data, let image = UIImage(data: data) {
+                    self.imageCache.setObject(image, forKey: url.absoluteString as NSString)
+                    completion(image, nil)
+                } else {
+                    completion(nil, error)
+                }
+            }.resume()
         }
     }
     
