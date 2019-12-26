@@ -49,6 +49,7 @@ class WeatherDisplayViewController: UIViewController {
         super.viewDidLoad()
         
         weatherServiceHandler = WeatherServiceAPIHandler()
+        self.navigationItem.title = "City Weather"
         
     }
     

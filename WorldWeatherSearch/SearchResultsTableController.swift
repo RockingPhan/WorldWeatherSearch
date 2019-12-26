@@ -25,7 +25,7 @@ class SearchResultsTableController: UITableViewController {
     var weatherServiceHandler: WeatherServiceAPIHandler!
     
     let searchURLString = "https://api.worldweatheronline.com/premium/v1/search.ashx"
-    
+
     override func viewDidLoad() {
           super.viewDidLoad()
         weatherServiceHandler = WeatherServiceAPIHandler()

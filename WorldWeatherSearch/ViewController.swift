@@ -49,12 +49,17 @@ class ViewController: UIViewController {
         
         if let searchObjects = WeatherDisplayViewController.getAllRecentSearchObjects {
             
-            recentSearchObjects = searchObjects.sorted(by: { $0.timeStamp! > $1.timeStamp! })
-            print("recentSearchObjects count: \(recentSearchObjects!.count)")
-            // tableview reload
+            sortRecentSearchItemsWithLatestFirst(searchObjects)
+            
         }
         
         recentSearchesTableView.reloadData()
+    }
+    
+    func sortRecentSearchItemsWithLatestFirst(_ searchObjects: [SearchModelObject]) {
+        
+        recentSearchObjects = searchObjects.sorted(by: { $0.timeStamp! > $1.timeStamp! })
+
     }
     
     
