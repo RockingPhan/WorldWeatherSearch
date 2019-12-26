@@ -29,6 +29,7 @@ class SearchAPIResult: Codable {
     var longitude: String?
     var population: String?
     var weatherUrl: [WeatherUrl]?
+    var timeStamp: Int64?
     
 }
 

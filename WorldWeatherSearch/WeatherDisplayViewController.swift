@@ -26,6 +26,8 @@ class WeatherDisplayViewController: UIViewController {
     
     var selectedModel: SearchModelObject?
     
+    var recentHistoryObjectsArray: [SearchModelObject]?
+    
     var currentWeatherData: CurrentCondition?
     
     var cityRequestData: Request?
@@ -38,6 +40,8 @@ class WeatherDisplayViewController: UIViewController {
 
     
     let localWeatherURLString = "https://api.worldweatheronline.com/premium/v1/weather.ashx"
+    
+    static let searchObjectsKey = "recent_search_objects"
     
     var activityIndicatorView : UIView?
     
@@ -77,6 +81,7 @@ class WeatherDisplayViewController: UIViewController {
             
         }
         
+            
         
     }
     
@@ -147,6 +152,8 @@ class WeatherDisplayViewController: UIViewController {
 
             self.humidityValue.text = "\(currentWeather.humidity!)%"
             
+            self.addItemToSearchHistory()
+                        
             if let weatherIconUrlArr = currentWeather.weatherIconUrl, weatherIconUrlArr.count > 0 {
                 
                 guard let iconImgUrlString = weatherIconUrlArr[0].value, let imageUrl = URL(string: iconImgUrlString)  else {
@@ -227,4 +234,71 @@ extension WeatherDisplayViewController {
         }
     }
     
+}
+
+extension WeatherDisplayViewController {
+    
+    func addItemToSearchHistory() {
+        
+        guard let searchModelObject = selectedModel else { return }
+        
+        let timestamp = Date().currentTimeMillis()
+        
+        searchModelObject.timeStamp = timestamp
+        
+        if let recentSearchObjectsArr = WeatherDisplayViewController.getAllRecentSearchObjects {
+            recentHistoryObjectsArray = recentSearchObjectsArr
+            if recentHistoryObjectsArray?.count == 10 {
+                recentHistoryObjectsArray?.remove(at: 0)
+            }
+            
+            if recentHistoryObjectsArray!.contains(where: { $0.latitude == searchModelObject.latitude && $0.longitude == searchModelObject.longitude}) {
+                
+                
+                recentHistoryObjectsArray?.removeAll(where: { $0.latitude == searchModelObject.latitude && $0.longitude == searchModelObject.longitude})
+                
+            }
+
+            
+            recentHistoryObjectsArray?.append(searchModelObject)
+            saveAllSearchObjects(searchObjects: recentHistoryObjectsArray!)
+        } else {
+            
+            if recentHistoryObjectsArray != nil {
+                
+                recentHistoryObjectsArray?.removeAll()
+            }
+            recentHistoryObjectsArray = [SearchModelObject]()
+            recentHistoryObjectsArray?.append(searchModelObject)
+            saveAllSearchObjects(searchObjects: recentHistoryObjectsArray!)
+        }
+        
+    }
+    
+     func saveAllSearchObjects(searchObjects: [SearchModelObject]) {
+         let encoder = JSONEncoder()
+         if let encoded = try? encoder.encode(searchObjects){
+            UserDefaults.standard.set(encoded, forKey: WeatherDisplayViewController.searchObjectsKey)
+         }
+    }
+    
+    static var getAllRecentSearchObjects: [SearchModelObject]? {
+        
+        if let recentSearchObjects = UserDefaults.standard.value(forKey: WeatherDisplayViewController.searchObjectsKey) as? Data {
+            let decoder = JSONDecoder()
+            if let objectsDecoded = try? decoder.decode(Array.self, from: recentSearchObjects) as [SearchModelObject] {
+                return objectsDecoded
+            }
+        }
+        return nil
+    }
+    
+    
+    
+}
+
+extension Date {
+    func currentTimeMillis() -> Int64 {
+        return Int64(self.timeIntervalSince1970 * 1000)
+    }
 }

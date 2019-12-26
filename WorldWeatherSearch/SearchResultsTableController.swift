@@ -105,7 +105,7 @@ extension SearchResultsTableController {
                 searchResultsCell.detailTextLabel?.text = countryArr[0].value
 
             }
-            
+                            
             
         } else {
             

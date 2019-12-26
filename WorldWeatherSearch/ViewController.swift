@@ -15,9 +15,13 @@ protocol SelectedModelDelegate {
 class ViewController: UIViewController {
     
     var searchController:UISearchController!
+        
+    var recentSearchObjects: [SearchModelObject]?
     
-    var selectedSearchModel: SearchModelObject?
+    let searchHistoryTitle = "Recent Search History"
 
+    @IBOutlet weak var recentSearchesTableView: UITableView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
@@ -39,6 +43,27 @@ class ViewController: UIViewController {
         definesPresentationContext = true
         
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+           super.viewWillAppear(animated)
+        
+        if let searchObjects = WeatherDisplayViewController.getAllRecentSearchObjects {
+            
+            recentSearchObjects = searchObjects.sorted(by: { $0.timeStamp! > $1.timeStamp! })
+            print("recentSearchObjects count: \(recentSearchObjects!.count)")
+            // tableview reload
+        }
+        
+        recentSearchesTableView.reloadData()
+    }
+    
+    
+    func displayWeatherView(for searchModel: SearchModelObject) {
+        
+        let weatherDisplayController = storyboard!.instantiateViewController(withIdentifier: "WeatherDisplayController") as! WeatherDisplayViewController
+        weatherDisplayController.selectedModel = searchModel
+        self.navigationController?.pushViewController(weatherDisplayController, animated: true)
+    }
 
 
 }
@@ -46,12 +71,68 @@ class ViewController: UIViewController {
 extension ViewController: SelectedModelDelegate {
     
     func handleSelectedModel(selectedModel: SearchModelObject) {
-        selectedSearchModel = selectedModel
         
-        let weatherDisplayController = storyboard!.instantiateViewController(withIdentifier: "WeatherDisplayController") as! WeatherDisplayViewController
-        weatherDisplayController.selectedModel = selectedSearchModel
-        self.navigationController?.pushViewController(weatherDisplayController, animated: true)
-        
+        displayWeatherView(for: selectedModel)
     }
 }
 
+extension ViewController: UITableViewDataSource {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        let recentSearchCell = tableView.dequeueReusableCell(withIdentifier: "RecentSearchCell", for: indexPath as IndexPath)
+
+        if let recentSearchObjectsArr = recentSearchObjects {
+            
+            let recentSearchObject = recentSearchObjectsArr[indexPath.row]
+            var titleStr = ""
+            if let areaName = recentSearchObject.areaName, areaName.count>0 {
+                
+                titleStr = areaName[0].value ?? ""
+            }
+            if let country = recentSearchObject.country, country.count>0 {
+                titleStr.append(", ")
+                titleStr.append(country[0].value ?? "")
+            }
+            
+            recentSearchCell.textLabel?.text = titleStr
+            
+        } else {
+            recentSearchCell.textLabel?.text = "No Recent Searches"
+        }
+        
+        return recentSearchCell
+    }
+    
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if let recentSearchObjectsArr = recentSearchObjects {
+            return recentSearchObjectsArr.count
+        }
+        
+        return 1
+    }
+    
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        
+        return searchHistoryTitle
+    }
+    
+}
+
+extension ViewController: UITableViewDelegate {
+    
+     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        tableView.deselectRow(at: indexPath, animated: true)
+        
+       if let recentSearchObjectsArr = recentSearchObjects {
+        
+            let recentSearchObject = recentSearchObjectsArr[indexPath.row]
+            
+               displayWeatherView(for: recentSearchObject)
+
+           
+        }
+    }
+
+}
