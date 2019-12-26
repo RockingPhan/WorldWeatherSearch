@@ -26,7 +26,7 @@ class ViewControllerTests: XCTestCase {
         
        homeViewController = viewController
         
-        let _ = homeViewController.view
+        _ = homeViewController.view
         
     }
 
@@ -60,7 +60,9 @@ class ViewControllerTests: XCTestCase {
         
           let storyboard: UIStoryboard = UIStoryboard(name: "Main", bundle: Bundle(for: ViewControllerTests.self))
         
+        // swiftlint:disable force_cast
         let searchResultsVC = storyboard.instantiateViewController(withIdentifier: "SearchResultsTableController") as! SearchResultsTableController
+        // swiftlint:enable force_cast
 
         XCTAssertNotNil(searchResultsVC)
     }
@@ -109,7 +111,7 @@ class ViewControllerTests: XCTestCase {
         searchObject2.areaName = [area2]
         searchObject2.timeStamp = Date().currentTimeMillis() + 2
         
-        let searchObjectsArr = [searchObject1,searchObject2]
+        let searchObjectsArr = [searchObject1, searchObject2]
         
         homeViewController.sortRecentSearchItemsWithLatestFirst(searchObjectsArr)
         
@@ -125,7 +127,6 @@ class ViewControllerTests: XCTestCase {
             let actualRecentSearcheTitles = [areaTitle1, areaTitle2]
             
             XCTAssertEqual(actualRecentSearcheTitles, expectedRecentSearcheTitles)
-
 
         }
         

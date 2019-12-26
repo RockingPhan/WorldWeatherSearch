@@ -21,7 +21,7 @@ class SearchResultsTableControllerTests: XCTestCase {
          
         searchResultsTableController = viewController
         
-        let _ = searchResultsTableController.view
+        _ = searchResultsTableController.view
         
     }
 
@@ -54,7 +54,7 @@ class SearchResultsTableControllerTests: XCTestCase {
             expectation.fulfill()
         }
         
-        self.waitForExpectations(timeout: 10, handler:nil)
+        self.waitForExpectations(timeout: 10, handler: nil)
         
     }
 

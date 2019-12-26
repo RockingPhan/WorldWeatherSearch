@@ -12,7 +12,7 @@ class SearchResultsTableController: UITableViewController {
     
     var searchModel: SearchModel?
     
-    var delegate: SelectedModelDelegate?
+    weak var delegate: SelectedModelDelegate?
     
     var matchingItems: [SearchModelObject]? {
         didSet {
@@ -45,8 +45,6 @@ class SearchResultsTableController: UITableViewController {
             self.matchingItems = nil
         }
         
-
-        
         var parameters = [String: String]()
         
         parameters["q"] = searchStr
@@ -61,14 +59,13 @@ class SearchResultsTableController: UITableViewController {
     
 }
 
-extension SearchResultsTableController : UISearchResultsUpdating {
+extension SearchResultsTableController: UISearchResultsUpdating {
     
     func updateSearchResults(for searchController: UISearchController) {
     
         guard let searchBarText = searchController.searchBar.text else { return  }
         
         getSearchResultsFromAPI(with: searchBarText)
-        
         
     }
     
@@ -92,8 +89,6 @@ extension SearchResultsTableController {
         
         if let matchingResults = matchingItems {
             
-           
-            
             let searchResultModelObj = matchingResults[indexPath.row]
             
             if let areaArr = searchResultModelObj.areaName, areaArr.count > 0 {
@@ -105,10 +100,8 @@ extension SearchResultsTableController {
                 searchResultsCell.detailTextLabel?.text = countryArr[0].value
 
             }
-                            
             
         } else {
-            
             
             searchResultsCell.textLabel?.text = "Results Not Found"
             searchResultsCell.detailTextLabel?.text = ""
@@ -116,7 +109,6 @@ extension SearchResultsTableController {
         }
         
         return searchResultsCell
-
                 
     }
     

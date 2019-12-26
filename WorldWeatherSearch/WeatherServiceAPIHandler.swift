@@ -38,8 +38,7 @@ class WeatherServiceAPIHandler {
                     let responseObject = try JSONDecoder().decode(T.self, from: data)
                     successHandler(responseObject)
                     return
-                }
-                catch {
+                } catch {
                     print("parse error")
                     return errorHandler(error.localizedDescription)
                  }
@@ -49,7 +48,7 @@ class WeatherServiceAPIHandler {
         }
         
         var items = [URLQueryItem]()
-        for (key,value) in params {
+        for (key, value) in params {
             items.append(URLQueryItem(name: key, value: value))
         }
         var myURL = URLComponents(string: urlString)
@@ -74,6 +73,5 @@ class WeatherServiceAPIHandler {
         }
         return isSuccessCode(urlResponse.statusCode)
     }
-    
     
 }

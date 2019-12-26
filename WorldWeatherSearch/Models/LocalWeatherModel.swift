@@ -20,7 +20,6 @@ class DataResult: Codable {
     var current_condition: [CurrentCondition]?
     var weather: [Weather]?
     var ClimateAverages: [ClimateAvgs]
-
     
 }
 
@@ -53,7 +52,6 @@ class CurrentCondition: Codable {
     var FeelsLikeC: String?
     var FeelsLikeF: String?
     var uvIndex: Int?
-
 
 }
 
@@ -138,7 +136,6 @@ class Hourly: Codable {
     var chanceofthunder: String?
     var uvIndex: String?
 
-
 }
 
 class ClimateAvgs: Codable {
@@ -156,5 +153,3 @@ class Month: Codable {
     var absMaxTemp_F: String?
     var avgDailyRainfall: String?
 }
-
-

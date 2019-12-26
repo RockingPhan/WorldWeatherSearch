@@ -8,13 +8,13 @@
 
 import UIKit
 
-protocol SelectedModelDelegate {
+protocol SelectedModelDelegate: class {
     func handleSelectedModel(selectedModel: SearchModelObject)
 }
 
 class ViewController: UIViewController {
     
-    var searchController:UISearchController!
+    var searchController: UISearchController!
         
     var recentSearchObjects: [SearchModelObject]?
     
@@ -27,10 +27,16 @@ class ViewController: UIViewController {
         // Do any additional setup after loading the view.
         print("In view controller")
         
-        let searchResultsTableController = storyboard!.instantiateViewController(withIdentifier: "SearchResultsTableController") as! SearchResultsTableController
-        searchResultsTableController.delegate = self
-        searchController = UISearchController(searchResultsController: searchResultsTableController)
-        searchController.searchResultsUpdater = searchResultsTableController as UISearchResultsUpdating
+        if let resultsTableController =
+            storyboard!.instantiateViewController(withIdentifier: "SearchResultsTableController")
+            as? SearchResultsTableController {
+            
+            resultsTableController.delegate = self
+            searchController = UISearchController(searchResultsController: resultsTableController)
+            
+            searchController.searchResultsUpdater = resultsTableController as UISearchResultsUpdating
+            
+        }
         
         searchController.searchBar.sizeToFit()
         searchController.searchBar.placeholder = "Search for places"
@@ -62,14 +68,14 @@ class ViewController: UIViewController {
 
     }
     
-    
     func displayWeatherView(for searchModel: SearchModelObject) {
         
+        // swiftlint:disable force_cast
         let weatherDisplayController = storyboard!.instantiateViewController(withIdentifier: "WeatherDisplayController") as! WeatherDisplayViewController
+        // swiftlint:enable force_cast
         weatherDisplayController.selectedModel = searchModel
         self.navigationController?.pushViewController(weatherDisplayController, animated: true)
     }
-
 
 }
 
@@ -108,7 +114,6 @@ extension ViewController: UITableViewDataSource {
         return recentSearchCell
     }
     
-    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if let recentSearchObjectsArr = recentSearchObjects {
             return recentSearchObjectsArr.count
@@ -135,7 +140,6 @@ extension ViewController: UITableViewDelegate {
             let recentSearchObject = recentSearchObjectsArr[indexPath.row]
             
                displayWeatherView(for: recentSearchObject)
-
            
         }
     }

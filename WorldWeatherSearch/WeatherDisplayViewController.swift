@@ -37,13 +37,12 @@ class WeatherDisplayViewController: UIViewController {
     var cityTitle: String?
     
     let imageCache = NSCache<NSString, UIImage>()
-
     
     let localWeatherURLString = "https://api.worldweatheronline.com/premium/v1/weather.ashx"
     
     static let searchObjectsKey = "recent_search_objects"
     
-    var activityIndicatorView : UIView?
+    var activityIndicatorView: UIView?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -52,11 +51,9 @@ class WeatherDisplayViewController: UIViewController {
         self.navigationItem.title = "City Weather"
         
     }
-    
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
         
         if let selectedLocationModel = selectedModel {
             
@@ -81,8 +78,6 @@ class WeatherDisplayViewController: UIViewController {
             }
             
         }
-        
-            
         
     }
     
@@ -113,8 +108,6 @@ class WeatherDisplayViewController: UIViewController {
 
            }
            
-
-           
            var parameters = [String: String]()
            
            parameters["q"] = location
@@ -127,7 +120,6 @@ class WeatherDisplayViewController: UIViewController {
                             successHandler: successHandler,
                             errorHandler: errorHandler)
        }
-    
     
     func setUpUIForCurrenWeather() {
         
@@ -145,11 +137,11 @@ class WeatherDisplayViewController: UIViewController {
 
             }
             
-            self.temperatureLabel.text = NSString(format:"\(currentWeather.temp_C!)%@" as NSString, "\u{00B0}") as String
+            self.temperatureLabel.text = NSString(format: "\(currentWeather.temp_C!)%@" as NSString, "\u{00B0}") as String
             
             self.windValue.text = "\(currentWeather.windspeedMiles!) mph"
             
-            self.feelsLikeValue.text = NSString(format:"\(currentWeather.FeelsLikeC!)%@" as NSString, "\u{00B0}") as String
+            self.feelsLikeValue.text = NSString(format: "\(currentWeather.FeelsLikeC!)%@" as NSString, "\u{00B0}") as String
 
             self.humidityValue.text = "\(currentWeather.humidity!)%"
             
@@ -160,8 +152,6 @@ class WeatherDisplayViewController: UIViewController {
                 guard let iconImgUrlString = weatherIconUrlArr[0].value, let imageUrl = URL(string: iconImgUrlString)  else {
                     return
                 }
-                
-                
                 
                 self.downloadImage(url: imageUrl, completion: { (iconImage, error) in
                     
@@ -180,12 +170,7 @@ class WeatherDisplayViewController: UIViewController {
 
         }
         
-        
-        
     }
-    
-    
-    
     
 }
 
@@ -221,7 +206,7 @@ extension WeatherDisplayViewController {
         if let cachedImage = imageCache.object(forKey: url.absoluteString as NSString) {
             completion(cachedImage, nil)
         } else {
-             URLSession.shared.dataTask(with: url) { data, response, error in
+             URLSession.shared.dataTask(with: url) { data, _, error in
                 if let error = error {
                     completion(nil, error)
                     
@@ -255,11 +240,9 @@ extension WeatherDisplayViewController {
             
             if recentHistoryObjectsArray!.contains(where: { $0.latitude == searchModelObject.latitude && $0.longitude == searchModelObject.longitude}) {
                 
-                
                 recentHistoryObjectsArray?.removeAll(where: { $0.latitude == searchModelObject.latitude && $0.longitude == searchModelObject.longitude})
                 
             }
-
             
             recentHistoryObjectsArray?.append(searchModelObject)
             saveAllSearchObjects(searchObjects: recentHistoryObjectsArray!)
@@ -278,7 +261,7 @@ extension WeatherDisplayViewController {
     
      func saveAllSearchObjects(searchObjects: [SearchModelObject]) {
          let encoder = JSONEncoder()
-         if let encoded = try? encoder.encode(searchObjects){
+         if let encoded = try? encoder.encode(searchObjects) {
             UserDefaults.standard.set(encoded, forKey: WeatherDisplayViewController.searchObjectsKey)
          }
     }
@@ -293,8 +276,6 @@ extension WeatherDisplayViewController {
         }
         return nil
     }
-    
-    
     
 }
 
