@@ -55,5 +55,41 @@ class WeatherDisplayViewControllerTests: XCTestCase {
         self.waitForExpectations(timeout: 10, handler: nil)
         
     }
+    
+    func testIfSearchObjectSavesToUserDefaults() {
+        
+        let searchObject1 = SearchModelObject()
+        let area1 = Area()
+        area1.value = "London"
+        searchObject1.areaName = [area1]
+        searchObject1.timeStamp = Date().currentTimeMillis()
+        
+        let searchObject2 = SearchModelObject()
+        let area2 = Area()
+        area2.value = "Paris"
+        searchObject2.areaName = [area2]
+        searchObject2.timeStamp = Date().currentTimeMillis() + 2
+        
+        let searchObjectsArr = [searchObject1, searchObject2]
+        
+        weatherDisplayViewController.saveAllSearchObjects(searchObjects: searchObjectsArr)
+        
+        let expectedSavedObjectTitles = ["London", "Paris"]
+        
+        if let actualSavedObjectArr = WeatherDisplayViewController.getAllRecentSearchObjects {
+            
+            let actualSavedObject1 = actualSavedObjectArr[0]
+            let actualSavedObject2 = actualSavedObjectArr[1]
+            
+            let areaTitle1 = actualSavedObject1.areaName![0].value
+            let areaTitle2 = actualSavedObject2.areaName![0].value
+            
+            let actualSavedObjectTitles = [areaTitle1, areaTitle2]
+            
+            XCTAssertEqual(actualSavedObjectTitles, expectedSavedObjectTitles)
+        }
+        
+        UserDefaults.standard.removeObject(forKey: WeatherDisplayViewController.searchObjectsKey)
+    }
 
 }
