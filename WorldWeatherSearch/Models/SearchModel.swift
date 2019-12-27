@@ -10,8 +10,11 @@ import UIKit
 
 class SearchModel: Codable {
     
-    var search_api: SearchAPIResult?
+    var searchApi: SearchAPIResult?
     
+    enum CodingKeys: String, CodingKey {
+        case searchApi = "search_api"
+    }
 }
 
 class SearchAPIResult: Codable {

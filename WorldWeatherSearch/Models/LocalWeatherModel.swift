@@ -17,9 +17,17 @@ class LocalWeatherModel: Codable {
 class DataResult: Codable {
     
     var request: [Request]?
-    var current_condition: [CurrentCondition]?
+    var currentCondition: [CurrentCondition]?
     var weather: [Weather]?
-    var ClimateAverages: [ClimateAvgs]
+    var climateAverages: [ClimateAvgs]
+    
+    enum CodingKeys: String, CodingKey {
+        case request
+        case currentCondition = "current_condition"
+        case weather
+        case climateAverages = "ClimateAverages"
+        
+    }
     
 }
 
@@ -31,9 +39,9 @@ class DataResult: Codable {
 
 class CurrentCondition: Codable {
     
-    var observation_time: String?
-    var temp_C: String?
-    var temp_F: String?
+    var observationTime: String?
+    var tempC: String?
+    var tempF: String?
     var weatherCode: String?
     var weatherIconUrl: [WeatherIconUrl]?
     var weatherDesc: [WeatherDesc]?
@@ -49,10 +57,34 @@ class CurrentCondition: Codable {
     var pressure: String?
     var pressureInches: String?
     var cloudcover: String?
-    var FeelsLikeC: String?
-    var FeelsLikeF: String?
+    var feelsLikeC: String?
+    var feelsLikeF: String?
     var uvIndex: Int?
-
+    
+    enum CodingKeys: String, CodingKey {
+        case observationTime = "observation_time"
+        case tempC = "temp_C"
+        case tempF = "temp_F"
+        case weatherCode
+        case weatherIconUrl
+        case weatherDesc
+        case windspeedMiles
+        case windspeedKmph
+        case winddirDegree
+        case winddir16Point
+        case precipMM
+        case precipInches
+        case humidity
+        case visibility
+        case visibilityMiles
+        case pressure
+        case pressureInches
+        case cloudcover
+        case feelsLikeC = "FeelsLikeC"
+        case feelsLikeF = "FeelsLikeF"
+        case uvIndex
+    }
+    
 }
 
 class WeatherIconUrl: Codable {
@@ -77,10 +109,25 @@ class Weather: Codable {
     var mintempF: String?
     var avgtempC: String?
     var avgtempF: String?
-    var totalSnow_cm: String?
+    var totalSnowCm: String?
     var sunHour: String?
     var uvIndex: String?
     var hourly: [Hourly]?
+    
+    enum CodingKeys: String, CodingKey {
+        case date
+        case astronomy
+        case maxtempC
+        case maxtempF
+        case mintempC
+        case mintempF
+        case avgtempC
+        case avgtempF
+        case totalSnowCm = "totalSnow_cm"
+        case sunHour
+        case uvIndex
+        case hourly
+    }
 
 }
 
@@ -90,15 +137,25 @@ class Astronomy: Codable {
     var sunset: String?
     var moonrise: String?
     var moonset: String?
-    var moon_phase: String?
-    var moon_illumination: String?
+    var moonphase: String?
+    var moonIllumination: String?
+    
+    enum CodingKeys: String, CodingKey {
+        case sunrise
+        case sunset
+        case moonrise
+        case moonset
+        case moonphase = "moon_phase"
+        case moonIllumination = "moon_illumination"
+    }
+    
 }
 
 class Hourly: Codable {
     
     var time: String?
-    var temp_C: String?
-    var temp_F: String?
+    var tempC: String?
+    var tempF: String?
     var windspeedMiles: String?
     var windspeedKmph: String?
     var winddirDegree: String?
@@ -114,16 +171,16 @@ class Hourly: Codable {
     var pressure: String?
     var pressureInches: String?
     var cloudcover: String?
-    var HeatIndexC: String?
-    var HeatIndexF: String?
-    var DewPointC: String?
-    var DewPointF: String?
-    var WindChillC: String?
-    var WindChillF: String?
-    var WindGustMiles: String?
-    var WindGustKmph: String?
-    var FeelsLikeC: String?
-    var FeelsLikeF: String?
+    var heatIndexC: String?
+    var heatIndexF: String?
+    var dewPointC: String?
+    var dewPointF: String?
+    var windChillC: String?
+    var windChillF: String?
+    var windGustMiles: String?
+    var windGustKmph: String?
+    var feelsLikeC: String?
+    var feelsLikeF: String?
     var chanceofrain: String?
     var chanceofremdry: String?
     var chanceofwindy: String?
@@ -135,7 +192,49 @@ class Hourly: Codable {
     var chanceofsnow: String?
     var chanceofthunder: String?
     var uvIndex: String?
-
+    
+    enum CodingKeys: String, CodingKey {
+          case time
+          case tempC = "temp_C"
+          case tempF = "temp_F"
+          case windspeedMiles
+          case windspeedKmph
+          case winddirDegree
+          case winddir16Point
+          case weatherCode
+          case weatherIconUrl
+          case weatherDesc
+          case precipMM
+          case precipInches
+          case humidity
+          case visibility
+          case visibilityMiles
+          case pressure
+          case pressureInches
+          case cloudcover
+          case heatIndexC = "HeatIndexC"
+          case heatIndexF = "HeatIndexF"
+          case dewPointC = "DewPointC"
+          case dewPointF = "DewPointF"
+          case windChillC = "WindChillC"
+          case windChillF = "WindChillF"
+          case windGustMiles = "WindGustMiles"
+          case windGustKmph = "WindGustKmph"
+          case feelsLikeC = "FeelsLikeC"
+          case feelsLikeF = "FeelsLikeF"
+          case chanceofrain
+          case chanceofremdry
+          case chanceofwindy
+          case chanceofovercast
+          case chanceofsunshine
+          case chanceoffrost
+          case chanceofhightemp
+          case chanceoffog
+          case chanceofsnow
+          case chanceofthunder
+          case uvIndex
+    }
+    
 }
 
 class ClimateAvgs: Codable {
@@ -148,8 +247,19 @@ class Month: Codable {
     var index: String?
     var name: String?
     var avgMinTemp: String?
-    var avgMinTemp_F: String?
+    var avgMinTempF: String?
     var absMaxTemp: String?
-    var absMaxTemp_F: String?
+    var absMaxTempF: String?
     var avgDailyRainfall: String?
+    
+    enum CodingKeys: String, CodingKey {
+        case index
+        case name
+        case avgMinTemp
+        case avgMinTempF = "avgMinTemp_F"
+        case absMaxTemp
+        case absMaxTempF = "absMaxTemp_F"
+        case avgDailyRainfall
+    }
+    
 }

@@ -92,7 +92,7 @@ class WeatherDisplayViewController: UIViewController {
     func getCurrentWeatherFromAPI(for location: String ) {
            
         let successHandler: (LocalWeatherModel) -> Void = { (localWeatherModel) in
-            if let currentweatherDataArr = localWeatherModel.data?.current_condition, currentweatherDataArr.count > 0 {
+            if let currentweatherDataArr = localWeatherModel.data?.currentCondition, currentweatherDataArr.count > 0 {
                 
                 self.removeSpinner()
                 self.currentWeatherData = currentweatherDataArr[0]
@@ -136,11 +136,11 @@ class WeatherDisplayViewController: UIViewController {
 
             }
             
-            self.temperatureLabel.text = NSString(format: "\(currentWeather.temp_C!)%@" as NSString, "\u{00B0}") as String
+            self.temperatureLabel.text = NSString(format: "\(currentWeather.tempC!)%@" as NSString, "\u{00B0}") as String
             
             self.windValue.text = "\(currentWeather.windspeedMiles!) mph"
             
-            self.feelsLikeValue.text = NSString(format: "\(currentWeather.FeelsLikeC!)%@" as NSString, "\u{00B0}") as String
+            self.feelsLikeValue.text = NSString(format: "\(currentWeather.feelsLikeC!)%@" as NSString, "\u{00B0}") as String
 
             self.humidityValue.text = "\(currentWeather.humidity!)%"
             

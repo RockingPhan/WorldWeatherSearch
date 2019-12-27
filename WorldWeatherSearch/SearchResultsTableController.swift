@@ -35,7 +35,7 @@ class SearchResultsTableController: UITableViewController {
     func getSearchResultsFromAPI(with searchStr: String) {
         
         let successHandler: (SearchModel) -> Void = { (searchModel) in
-            self.matchingItems = searchModel.search_api?.result
+            self.matchingItems = searchModel.searchApi?.result
         }
         
         let errorHandler: (String) -> Void = { (error) in
