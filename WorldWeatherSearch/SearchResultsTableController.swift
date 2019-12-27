@@ -40,8 +40,6 @@ class SearchResultsTableController: UITableViewController {
         
         let errorHandler: (String) -> Void = { (error) in
             print(error)
-           // self.view?.displayError(error: error)
-
             self.matchingItems = nil
         }
         
@@ -89,16 +87,22 @@ extension SearchResultsTableController {
         
         if let matchingResults = matchingItems {
             
-            let searchResultModelObj = matchingResults[indexPath.row]
+            let isIndexValid = matchingResults.indices.contains(indexPath.row)
             
-            if let areaArr = searchResultModelObj.areaName, areaArr.count > 0 {
-                searchResultsCell.textLabel?.text = areaArr[0].value
-
-            }
-            
-            if let countryArr = searchResultModelObj.country, countryArr.count > 0 {
-                searchResultsCell.detailTextLabel?.text = countryArr[0].value
-
+            if isIndexValid {
+                
+                let searchResultModelObj = matchingResults[indexPath.row]
+                
+                if let areaArr = searchResultModelObj.areaName, areaArr.count > 0 {
+                    searchResultsCell.textLabel?.text = areaArr[0].value
+                    
+                }
+                
+                if let countryArr = searchResultModelObj.country, countryArr.count > 0 {
+                    searchResultsCell.detailTextLabel?.text = countryArr[0].value
+                    
+                }
+                
             }
             
         } else {

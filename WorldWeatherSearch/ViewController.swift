@@ -26,28 +26,7 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         print("In view controller")
-        
-        if let resultsTableController =
-            storyboard!.instantiateViewController(withIdentifier: "SearchResultsTableController")
-            as? SearchResultsTableController {
-            
-            resultsTableController.delegate = self
-            searchController = UISearchController(searchResultsController: resultsTableController)
-            
-            searchController.searchResultsUpdater = resultsTableController as UISearchResultsUpdating
-            
-        }
-        
-        searchController.searchBar.sizeToFit()
-        searchController.searchBar.placeholder = "Search for places"
-        
-        navigationItem.searchController = searchController
-        navigationItem.hidesSearchBarWhenScrolling = false
-
-        searchController.hidesNavigationBarDuringPresentation = false
-        searchController.dimsBackgroundDuringPresentation = true
-        definesPresentationContext = true
-        
+        setUpSearchController()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -60,6 +39,31 @@ class ViewController: UIViewController {
         }
         
         recentSearchesTableView.reloadData()
+    }
+    
+    func setUpSearchController() {
+        
+        if let resultsTableController =
+                   storyboard!.instantiateViewController(withIdentifier: "SearchResultsTableController")
+                   as? SearchResultsTableController {
+                   
+                   resultsTableController.delegate = self
+                   searchController = UISearchController(searchResultsController: resultsTableController)
+                   
+                   searchController.searchResultsUpdater = resultsTableController as UISearchResultsUpdating
+                   
+               }
+               
+               searchController.searchBar.sizeToFit()
+               searchController.searchBar.placeholder = "Search for places"
+               
+               navigationItem.searchController = searchController
+               navigationItem.hidesSearchBarWhenScrolling = false
+
+               searchController.hidesNavigationBarDuringPresentation = false
+               searchController.dimsBackgroundDuringPresentation = true
+               definesPresentationContext = true
+        
     }
     
     func sortRecentSearchItemsWithLatestFirst(_ searchObjects: [SearchModelObject]) {

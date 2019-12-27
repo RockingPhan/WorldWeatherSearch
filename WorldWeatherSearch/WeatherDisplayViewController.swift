@@ -94,19 +94,18 @@ class WeatherDisplayViewController: UIViewController {
         let successHandler: (LocalWeatherModel) -> Void = { (localWeatherModel) in
             if let currentweatherDataArr = localWeatherModel.data?.current_condition, currentweatherDataArr.count > 0 {
                 
+                self.removeSpinner()
                 self.currentWeatherData = currentweatherDataArr[0]
                 self.setUpUIForCurrenWeather()
-                self.removeSpinner()
                 
             }
         }
            
-           let errorHandler: (String) -> Void = { (error) in
-               print(error)
-              // self.view?.displayError(error: error)
-              self.removeSpinner()
-
-           }
+        let errorHandler: (String) -> Void = { (error) in
+            self.removeSpinner()
+            self.displayError(error: error)
+            
+        }
            
            var parameters = [String: String]()
            
@@ -146,28 +145,51 @@ class WeatherDisplayViewController: UIViewController {
             self.humidityValue.text = "\(currentWeather.humidity!)%"
             
             self.addItemToSearchHistory()
-                        
-            if let weatherIconUrlArr = currentWeather.weatherIconUrl, weatherIconUrlArr.count > 0 {
+                                    
+            self.downloadWeatherIcon(weatherData: currentWeather)
+
+        }
+        
+    }
+    
+    func downloadWeatherIcon(weatherData: CurrentCondition) {
+        
+        if let weatherIconUrlArr = weatherData.weatherIconUrl, weatherIconUrlArr.count > 0 {
+            
+            guard let iconImgUrlString = weatherIconUrlArr[0].value, let imageUrl = URL(string: iconImgUrlString)  else {
+                return
+            }
+            
+            self.downloadImage(url: imageUrl, completion: { (iconImage, error) in
                 
-                guard let iconImgUrlString = weatherIconUrlArr[0].value, let imageUrl = URL(string: iconImgUrlString)  else {
+                if let error = error {
+                    print("Couldn't download image: ", error)
                     return
                 }
+                guard let weatherIconImage = iconImage else { return }
+                DispatchQueue.main.async {
+                    self.weatherIconImgView.image = weatherIconImage
+                }
                 
-                self.downloadImage(url: imageUrl, completion: { (iconImage, error) in
-                    
-                    if let error = error {
-                        print("Couldn't download image: ", error)
-                        return
-                    }
-                    guard let weatherIconImage = iconImage else { return }
-                    DispatchQueue.main.async {
-                        self.weatherIconImgView.image = weatherIconImage
-                    }
-                    
-                })
-                
+            })
+            
+        }
+    }
+    
+    func displayError(error: String) {
+        
+        DispatchQueue.main.async {
+            
+            let alertController = UIAlertController(title: "WorldWeatherSearch", message: error, preferredStyle: .alert)
+            
+            let okAction = UIAlertAction(title: "Ok", style: .default) { (_) in
+                self.navigationController?.popViewController(animated: true)
             }
-
+            
+            alertController.addAction(okAction)
+            
+            self.present(alertController, animated: true, completion: nil)
+            
         }
         
     }

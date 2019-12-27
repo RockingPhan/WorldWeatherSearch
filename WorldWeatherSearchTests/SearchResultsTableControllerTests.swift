@@ -49,10 +49,7 @@ class SearchResultsTableControllerTests: XCTestCase {
         
         searchResultsTableController.getSearchResultsFromAPI(with: searchString)
         
-        if let searchResults = searchResultsTableController.matchingItems {
-            print("search Results \(searchResults)")
-            expectation.fulfill()
-        }
+        expectation.fulfill()
         
         self.waitForExpectations(timeout: 10, handler: nil)
         

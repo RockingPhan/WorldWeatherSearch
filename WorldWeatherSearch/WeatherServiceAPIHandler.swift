@@ -53,8 +53,14 @@ class WeatherServiceAPIHandler {
         }
         var myURL = URLComponents(string: urlString)
         myURL?.queryItems = items
+        
+        var hostURLString = urlString
+        
+        if let urlStr = myURL?.string {
+            hostURLString = urlStr.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
+        }
 
-        guard let url = myURL?.url else {
+        guard let url = URL(string: hostURLString) else {
             return errorHandler("Unable to create URL from given string")
         }
         var request = URLRequest(url: url)
